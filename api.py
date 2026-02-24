@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import joblib
 import os
 
 app = Flask(__name__)
+CORS(app) 
 
 # Load model once at startup
 model = joblib.load("music_recommender.joblib")
