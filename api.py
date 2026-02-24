@@ -4,7 +4,7 @@ import joblib
 import os
 
 app = Flask(__name__)
-CORS(app) 
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Load model once at startup
 model = joblib.load("music_recommender.joblib")
