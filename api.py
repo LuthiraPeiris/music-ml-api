@@ -1,26 +1,28 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 import joblib
 import os
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
-
-# Load model once at startup
 model = joblib.load("music_recommender.joblib")
 
 @app.get("/")
-def health():
+def home():
     return "Music ML API running"
 
-@app.post("/predict")
+@app.route("/predict", methods=["POST"])
 def predict():
+
     data = request.get_json(force=True)
 
     age = int(data["age"])
     gender = int(data["gender"])
 
+    print(f"Request received → age={age}, gender={gender}")
+
     genre = model.predict([[age, gender]])[0]
+
+    print(f"Prediction → {genre}")
+
     return jsonify({"genre": genre})
 
 if __name__ == "__main__":
